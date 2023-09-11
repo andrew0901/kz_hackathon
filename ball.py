@@ -16,41 +16,6 @@ dt = 0.05
 x0, y0 = 0, 4
 vx0, vy0 = 1, 0
 
-def get_pos(t=0):
-    """A generator yielding the ball's position at time t."""
-    x, y, vx, vy = x0, y0, vx0, vy0
-    while x < XMAX:
-        t += dt
-        x += vx0 * dt
-        y += vy * dt
-        vy -= g * dt
-        if y < 0:
-            # bounce!
-            y = 0
-            vy = -vy * cor 
-        yield x, y
-
-'''
-# Set up a new Figure, with equal aspect ratio so the ball appears round.
-count = 1
-gen = get_pos()
-while count <= 50:
-    x, y = next(gen)
-
-    fig, ax = plt.subplots()
-    ax.set_aspect('equal')
-
-    # These are the objects we need to keep track of.
-    line, = ax.plot([x], [y], lw=2, marker="o", markersize=5, markerfacecolor="blue")
-    plt.xlim([-1, 5])
-    plt.ylim([0, 5])
-    plt.savefig("img/image" + str(count) + ".png")
-    plt.close()
-    
-
-    count += 1
-    '''
-
 class Ball():
     def __init__(self):
         # Acceleration due to gravity, m.s-2.
@@ -76,16 +41,16 @@ class Ball():
             y += vy * self.dt
             vy -= g * self.dt
             if y < 0:
-                # bounce!
+                # bounce when y < 0
                 y = 0
-                vy = -vy * cor 
+                vy = -vy * cor # reverse vy direction and reduce vy by a fraction
             yield x, y
     
     def draw_image(self, x, y):
+        #draw a matplotlib figure according current ball position, save it to temp.png
         fig, ax = plt.subplots()
         ax.set_aspect('equal')
 
-        # These are the objects we need to keep track of.
         line, = ax.plot([x], [y], lw=2, marker="o", markersize=5, markerfacecolor="blue")
         plt.xlim([-1, 5])
         plt.ylim([0, 5])
@@ -93,6 +58,7 @@ class Ball():
         plt.close()
     
     def generate_frames(self):
+        #generate VideoFrames
         gen = self.get_pos()
         count = 1
         frames = []
@@ -100,7 +66,7 @@ class Ball():
             x, y = next(gen)
             self.draw_image(x, y)
             img = Image.open("temp.png")
-            frame = VideoFrame.from_image(img)
+            frame = VideoFrame.from_image(img) #convert from png to VideoFrame
             count += 1
             frames.append(frame)
         return frames
