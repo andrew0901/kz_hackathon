@@ -54,13 +54,13 @@ while count <= 50:
 class Ball():
     def __init__(self):
         # Acceleration due to gravity, m.s-2.
-        self.g = 9.81
+        self.g = 20
         # The maximum x-range of ball's trajectory to plot.
         self.XMAX = 500
         # The coefficient of restitution for bounces (-v_up/v_down).
         self.cor = 0.65
         # The time step for the animation.
-        self.dt = 0.05
+        self.dt = 0.5
 
         # Initial position and velocity vectors.
         self.x0, self.y0 = 0, 4

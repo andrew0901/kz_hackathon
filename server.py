@@ -20,12 +20,12 @@ class FramesTransportTrack(MediaStreamTrack):
         self.frames = self.ball.generate_frames()
 
     async def recv(self):
-        pts, time_base = await self.next_timestamp()
+        #pts, time_base = await self.next_timestamp()
         frame = self.frames[self.counter % 10]
-        frame.pts = pts
-        frame.time_base = time_base
+        #frame.pts = pts
+        #frame.time_base = time_base
         self.counter += 1
-        return frame
+        return 1
 
 
 async def run(signaling, pc):

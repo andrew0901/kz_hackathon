@@ -34,7 +34,10 @@ async def run(signaling, pc, recorder):
         print("Receiving %s" % track.kind)
         print(track)
         recorder.addTrack(track)
+        a = track.recv()
+        print(a)
     
+    '''
     while True:
         obj = await signaling.receive()
 
@@ -44,7 +47,7 @@ async def run(signaling, pc, recorder):
 
             if obj.type == "offer":
                 # send answer
-                pc.addTrack(FramesTransportTrack())
+                t = pc.addTrack(FramesTransportTrack())
                 await pc.setLocalDescription(await pc.createAnswer())
                 await signaling.send(pc.localDescription)
         elif isinstance(obj, RTCIceCandidate):
@@ -52,8 +55,10 @@ async def run(signaling, pc, recorder):
         elif obj is BYE:
             print("Exiting")
             break
-    
     '''
+
+    
+    
     # receive the offer from server
     await signaling.connect()
     print('connected')
@@ -72,7 +77,7 @@ async def run(signaling, pc, recorder):
     answer = await pc.createAnswer()
     await signaling.send(answer) 
     print("answer sent")
-    '''
+    
 
     #await recorder.start()
 
