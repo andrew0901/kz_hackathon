@@ -60,7 +60,7 @@ class Ball():
         # The coefficient of restitution for bounces (-v_up/v_down).
         self.cor = 0.65
         # The time step for the animation.
-        self.dt = 0.5
+        self.dt = 0.07
 
         # Initial position and velocity vectors.
         self.x0, self.y0 = 0, 4
@@ -71,10 +71,10 @@ class Ball():
         """A generator yielding the ball's position at time t."""
         x, y, vx, vy = self.x0, self.y0, self.vx0, self.vy0
         while x < XMAX:
-            t += dt
-            x += vx0 * dt
-            y += vy * dt
-            vy -= g * dt
+            t += self.dt
+            x += vx0 * self.dt
+            y += vy * self.dt
+            vy -= g * self.dt
             if y < 0:
                 # bounce!
                 y = 0
@@ -96,7 +96,7 @@ class Ball():
         gen = self.get_pos()
         count = 1
         frames = []
-        while count <= 10:
+        while count <= 50:
             x, y = next(gen)
             self.draw_image(x, y)
             img = Image.open("temp.png")

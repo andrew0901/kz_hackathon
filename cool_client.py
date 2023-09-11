@@ -7,7 +7,7 @@ event = asyncio.Event()
 event.set()
 
 async def consume_track(track:MediaStreamTrack):
-    for i in range(50):
+    for i in range(100):
         frame:VideoFrame = await track.recv()
         #arr = frame.to_ndarray()
         #print(arr)
@@ -27,18 +27,17 @@ async def run():
     await signaling.connect()
     print('connected')
 
-    while True:
 
-        offer = await signaling.receive()
-        await pc.setRemoteDescription(offer)
-        print('offer received')
+    offer = await signaling.receive()
+    await pc.setRemoteDescription(offer)
+    print('offer received')
 
-        answer = await pc.createAnswer()
-        await pc.setLocalDescription(answer)
-        await signaling.send(answer)
-        print('answer sent')
-    #await asyncio.sleep(10)
-    #await signaling.close()
+    answer = await pc.createAnswer()
+    await pc.setLocalDescription(answer)
+    await signaling.send(answer)
+    print('answer sent')
+    await asyncio.sleep(10)
+    await pc.close()
 
 if __name__ == "__main__":
     asyncio.run(run())

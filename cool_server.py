@@ -2,7 +2,7 @@ import asyncio
 import fractions
 import cv2
 import numpy as np
-from aiortc import MediaStreamTrack, RTCPeerConnection, RTCSessionDescription
+from aiortc import MediaStreamTrack, RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
 from av.video.frame import VideoFrame
 from aiortc.contrib.signaling import TcpSocketSignaling
 from ball import Ball
@@ -25,7 +25,7 @@ class VideoImageTrack(MediaStreamTrack):
         frame.time_base = fractions.Fraction(1, 30)
         return frame
 
-class FramesTransportTrack(MediaStreamTrack):
+class FramesTransportTrack(VideoStreamTrack):
 
     kind = "video"
     def __init__(self):
@@ -39,9 +39,10 @@ class FramesTransportTrack(MediaStreamTrack):
 
     async def recv(self):
         #pts, time_base = await self.next_timestamp()
-        frame = self.frames[self.counter % 10]
-        frame.pts = self.counter
-        frame.time_base = fractions.Fraction(1, 30)
+        pts, time_base = await self.next_timestamp()
+        frame = self.frames[self.counter % 50]
+        frame.pts = pts
+        frame.time_base = time_base
         #frame.pts = pts
         #frame.time_base = time_base
         self.counter += 1
